@@ -1,0 +1,45 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python Debugger: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "justMyCode": false,
+            "args": [
+                // bert_tagger
+                "--gpus", "6", "--seed", "0", "--output_dir", "results/debug", "--debug",
+                "train",
+                "data/conll03/train.jsonl",
+                "data/conll03/dev.jsonl",
+                "data/conll03/test.jsonl",
+                "--mini_batch_size", "32", "--accumulation_steps", "1", "--evaluate_batch_size", "64",
+                "--lr", "1e-5", "--no_pret_lr", "1e-3", "--warmup_steps", "2", "--clip_grad_norm", "-200.0",
+                "--epochs", "20", "--patience", "6", "--metric", "+F1",
+                "bert_tagger", "--plm_dir", "/data/hfmodel/bert-large-uncased",
+
+                // bert_lstm_crf_tagger
+                // "--gpus", "5", "--seed", "0", "--output_dir", "results/debug", "--debug",
+                // "train",
+                // "data/conll03/train.jsonl",
+                // "data/conll03/dev.jsonl",
+                // "data/conll03/test.jsonl",
+                // "--mini_batch_size", "32", "--accumulation_steps", "1", "--evaluate_batch_size", "64",
+                // "--lr", "1e-5", "--no_pret_lr", "1e-3", "--warmup_steps", "2", "--clip_grad_norm", "-200.0",
+                // "--epochs", "20", "--patience", "6", "--metric", "+F1",
+                // "bert_lstm_crf_tagger", "--plm_dir", "/data/hfmodel/bert-large-uncased", "--lstm_layers", "2"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Python Debugger: Module",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "datapreprocessing.data_processing"
+        }
+    ]
+}

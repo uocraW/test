@@ -1,0 +1,12 @@
+{
+    "editor.fontFamily": "Jetbrains Mono, Consolas, 'Courier New', monospace",
+    "editor.fontSize": 15,
+    "python.linting.flake8Enabled": true,
+    "python.linting.flake8Args": [
+        "--config=.flake8"
+    ],
+    "editor.rulers": [
+        79,
+        120
+    ]
+}

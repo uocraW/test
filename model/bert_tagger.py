@@ -35,12 +35,13 @@ class BERTTagger(nn.Module):
             output_attentions=False, output_hidden_states=True, return_dict=True
         )
 
-        # >>>>>>>>>>> 在下面补齐代码
-        plm_outputs可以得到token的表示，需要将其转化为word的表示。
-        比如McQuillan这个word会被表示为[11338, 26147, 5802]三个token，我们需要将这三个token表示转换为一个word表示才能进行后续的分类。
-        只实现最简单的一种方式：将每个word对应的多个token中的第一个token表示提取出来，将其作为整个word的表示。
-        word_repr = xxxxx
-        # <<<<<<<<<<<<< 在上面补齐代码
+        # 将每个word对应的多个token中的第一个token表示提取出来，将其作为整个word的表示。
+        last_hidden_state = plm_outputs.last_hidden_state
+        batch_size, seq_len, hidden_size = last_hidden_state.size()
+        word_repr = torch.zeros(batch_size, offsets.size(1), hidden_size, device=last_hidden_state.device)
+        for i in range(batch_size):
+            word_repr[i] = last_hidden_state[i, offsets[i], :]
+
 
         logits = self.classifier(word_repr)
         pred_labels_ids = torch.argmax(logits, dim=-1)
@@ -57,9 +58,7 @@ class BERTTagger(nn.Module):
                 res["loss"] = loss
                 res["pred_labels"] = pred_labels
             else:
-                # TODO: predict results
-                pass
-
+                res["pred_labels"] = pred_labels
         return res
 
     def __labels_from_id_to_str(self, pred_labels_ids: torch.Tensor, masks: torch.Tensor) -> List[List[str]]:
